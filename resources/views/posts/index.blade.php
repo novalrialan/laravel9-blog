@@ -23,15 +23,13 @@
         <br>
         @foreach ($posts as $post)
             <div class="card mb-3">
-                @php
-                    $post = explode(',', $post);
-                @endphp
+
                 <div class="card-body">
-                    <h5 class="card-title">{{ $post[1] }}</h5>
-                    <p class="card-text">{{ $post[2] }}</p>
+                    <h5 class="card-title">{{ $post->title }}</h5>
+                    <p class="card-text">{{ $post->content }}</p>
                     <p class="card-text"><small class="text-muted">Last updated
-                            {{ date('d M Y H:i', strtotime($post[3])) }}</small></p>
-                    <a href="{{ url("posts/{$post[0]}") }}" class="btn btn-primary">Selengkapnya</a>
+                            {{ date('d M Y H:i', strtotime($post->created_at)) }}</small></p>
+                    <a href="{{ url("posts/{$post->id}") }}" class="btn btn-primary">Selengkapnya</a>
                 </div>
 
             </div>

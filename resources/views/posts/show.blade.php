@@ -8,20 +8,23 @@
     <link rel="stylesheet" href="{{ asset('bootstrap-5.0.2/css/bootstrap.min.css') }}">
     <script src="{{ asset('bootstrap-5.0.2/js/bootstrap.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/blog.css') }}">
-    <title>Blog | Judul: {{ $post[1] }}</title>
+    <title>Blog | Judul:{{ $posts[0]->title }} </title>
 </head>
 
 <body>
     <div class="container">
         <div class="col-md-8">
 
-
+            {{-- @php
+                dd($posts);
+            @endphp --}}
             <article class="blog-post">
-                <h2 class="blog-post-title">{{ $post[1] }}</h2>
-                <p class="blog-post-meta"> {{ date('d M Y H:i', strtotime($post[3])) }} by <a href="#">Mark</a>
+                <h2 class="blog-post-title">{{ $posts[0]->title }}</h2>
+                <p class="blog-post-meta"> {{ date('d M Y H:i', strtotime($posts[0]->created_at)) }} by <a
+                        href="#">Mark</a>
                 </p>
 
-                <p>{{ $post[2] }}</p>
+                <p>{{ $posts[0]->content }}</p>
                 <a href="{{ url('posts') }}" class="btn btn-danger">
                     Kembali</a>
                 <hr>
