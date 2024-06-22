@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,12 +17,16 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = DB::table('posts')->select('id','title','content','created_at')->get();
 
-        $view_data = [ 
-            "posts" =>$posts
+        $posts = Post::where('active', true)
+            ->get();
+
+
+
+        $view_data = [
+            "posts" => $posts
         ];
-        return view('posts.index',$view_data);
+        return view('posts.index', $view_data);
     }
 
     /**
@@ -45,12 +50,13 @@ class PostController extends Controller
         $title = $request->input('title');
         $content = $request->input('content');
 
-       DB::table('posts')->insert([
-        'title'=> $title,
-        'content'=>$content,
-        'created_at'=>date('Y-m-d H:i:s'),
-        'updated_at'=>date('Y-m-d H:i:s')
-       ]);
+        Post::insert([
+            'title' => $title,
+            'content' => $content,
+            'active' => true, // default value
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
         return redirect('posts');
     }
 
@@ -62,14 +68,17 @@ class PostController extends Controller
      */
     public function show($id)
     {
-      
-       $posts = DB::table('posts')->select('title','content','created_at')->where('id','=',$id)->get();
-        
-       $view_data = [
-        'posts' => $posts,
-       ];
-     
-       return view('posts.show',$view_data);
+
+        $posts = Post::where('id', '=', $id)->first();
+
+        $comments = $posts->comments()->limit(2)->get();
+
+        $view_data = [
+            'posts' => $posts,
+            'comments' => $comments,
+        ];
+
+        return view('posts.show', $view_data);
     }
 
     /**
@@ -80,7 +89,13 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $posts = DB::table('posts')->select('id', 'title', 'content', 'created_at')->where('id', '=', $id)->get();
+
+        $view_data = [
+            'posts' => $posts,
+        ];
+
+        return view('posts.edit', $view_data);
     }
 
     /**
@@ -92,7 +107,14 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        DB::table('posts')
+            ->where('id', $id)
+            ->update([
+                'title' => $request->title,
+                'content' => $request->content,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+        return redirect("posts/{$id}");
     }
 
     /**
@@ -103,6 +125,10 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        Post::where('id', $id)
+            ->delete();
+
+        return redirect('posts');
     }
 }
