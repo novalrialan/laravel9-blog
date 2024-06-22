@@ -12,6 +12,21 @@ class Post extends Model
 
     use SoftDeletes;
 
+    public $fillable = [
+        'title',
+        'content'
+    ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($post) {
+            $post->active = true;
+            $post->slug = str_replace(' ', '-', $post->title);
+        });
+    }
+
     // public function active()
     // {
     //     return $this->where('active', true);
@@ -20,6 +35,6 @@ class Post extends Model
     public  function comments()
     {
 
-        return $this->hasMany(Comment::class, 'post_id', 'id');
+        return $this->hasMany(Comment::class);
     }
 }
