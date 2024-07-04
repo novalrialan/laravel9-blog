@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layout.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{{ asset('bootstrap-5.0.2/css/bootstrap.min.css') }}">
-    <script src="{{ asset('bootstrap-5.0.2/js/bootstrap.min.js') }}"></script>
-    <title>Blog | Edit Postingan</title>
-</head>
+@section('title', 'Blog | Edit Postingan')
 
-<body>
+
+
+@section('content')
     <div class="container">
         <h1> Edit Postingan Baru</h1>
 
@@ -36,8 +30,4 @@
         </form>
     </div>
 
-
-
-</body>
-
-</html>
+@endsection
